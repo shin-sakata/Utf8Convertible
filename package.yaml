@@ -64,6 +64,9 @@ ghc-options:
 
 dependencies:
   - base >= 4.7 && < 5
+  - text >= 1.1
+  - bytestring >= 0.10
+  - utf8-string >= 1
 
 library:
   source-dirs: src
