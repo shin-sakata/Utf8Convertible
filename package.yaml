@@ -54,6 +54,7 @@ default-extensions:
   - TypeFamilies
   - TypeSynonymInstances
   - ViewPatterns
+  - TypeOperators
 
 ghc-options:
   - -Wall

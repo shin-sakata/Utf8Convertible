@@ -1,4 +1,12 @@
-import           Prelude
+import Data.Text (Text)
+import Data.Utf8Convertible
+import Prelude
 
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = printGenericText ("こんにちわ" :: String)
+
+printText :: Text -> IO ()
+printText = putStrLn . convert
+
+printGenericText :: (ConvertTo Text a) => a -> IO ()
+printGenericText txt = printText $ convert txt

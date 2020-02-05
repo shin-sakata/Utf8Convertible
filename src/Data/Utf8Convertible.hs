@@ -1,5 +1,8 @@
-module Utf8Convertible
+module Data.Utf8Convertible
   ( convert
+  , ConvertTo
+  , ConvertFrom
+  , Utf8Convertible
   ) where
 
 import qualified Codec.Binary.UTF8.String as UTF8String
@@ -24,9 +27,15 @@ type LByteString = LBS.ByteString
 class Utf8Convertible a b where
   convert :: a -> b
 
-instance Utf8Convertible a a where
-  {-# INLINE convert #-}
-  convert = id
+-- | example usage
+-- convertToText :: ConvertTo Text a => a -> Text
+-- convertToText convertible = convert convertible
+type ConvertTo to from = Utf8Convertible from to
+
+-- | example usage
+-- ConvertFrom :: ConvertFrom Text a => a -> String
+-- ConvertFrom convertible = convert convertible
+type ConvertFrom from to = Utf8Convertible from to
 
 -- |
 --------------------------------
