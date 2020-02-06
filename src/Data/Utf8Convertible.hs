@@ -164,3 +164,30 @@ instance Utf8Convertible LByteString LByteString where
 instance Utf8Convertible LByteString TextBuilder where
   {-# INLINE convert #-}
   convert = TB.fromLazyText . convert
+
+--------------------------------
+-- from TextLazyBuilder instances
+--------------------------------
+instance Utf8Convertible TextBuilder String where
+  {-# INLINE convert #-}
+  convert = convert . TB.toLazyText
+
+instance Utf8Convertible TextBuilder Text where
+  {-# INLINE convert #-}
+  convert = convert . TB.toLazyText
+
+instance Utf8Convertible TextBuilder LText where
+  {-# INLINE convert #-}
+  convert = TB.toLazyText
+
+instance Utf8Convertible TextBuilder ByteString where
+  {-# INLINE convert #-}
+  convert = E.encodeUtf8 . convert
+
+instance Utf8Convertible TextBuilder LByteString where
+  {-# INLINE convert #-}
+  convert = LE.encodeUtf8 . TB.toLazyText
+
+instance Utf8Convertible TextBuilder TextBuilder where
+  {-# INLINE convert #-}
+  convert = id
