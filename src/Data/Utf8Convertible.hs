@@ -214,3 +214,34 @@ instance Utf8Convertible TextBuilder TextBuilder where
 instance Utf8Convertible TextBuilder BSBuilder where
   {-# INLINE convert #-}
   convert = convert . TB.toLazyText
+
+--------------------------------
+-- from ByteStringLazyBuilder instances
+--------------------------------
+instance Utf8Convertible BSBuilder String where
+  {-# INLINE convert #-}
+  convert = convert . BB.toLazyByteString
+
+instance Utf8Convertible BSBuilder Text where
+  {-# INLINE convert #-}
+  convert = convert . BB.toLazyByteString
+
+instance Utf8Convertible BSBuilder LText where
+  {-# INLINE convert #-}
+  convert = convert . BB.toLazyByteString
+
+instance Utf8Convertible BSBuilder ByteString where
+  {-# INLINE convert #-}
+  convert = convert . BB.toLazyByteString
+
+instance Utf8Convertible BSBuilder LByteString where
+  {-# INLINE convert #-}
+  convert = BB.toLazyByteString
+
+instance Utf8Convertible BSBuilder TextBuilder where
+  {-# INLINE convert #-}
+  convert = convert . BB.toLazyByteString
+
+instance Utf8Convertible BSBuilder BSBuilder where
+  {-# INLINE convert #-}
+  convert = id
