@@ -7,6 +7,7 @@ module Data.Utf8Convertible
 
 import qualified Codec.Binary.UTF8.String as UTF8String
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Builder as BB
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.String as S
 import qualified Data.Text as T
@@ -25,6 +26,8 @@ type ByteString = BS.ByteString
 type LByteString = LBS.ByteString
 
 type TextBuilder = TB.Builder
+
+type BSBuilder = BB.Builder
 
 {- |
   Indicates that conversion from A to B is possible
@@ -78,11 +81,15 @@ instance Utf8Convertible Text ByteString where
 
 instance Utf8Convertible Text LByteString where
   {-# INLINE convert #-}
-  convert = LBS.fromStrict . convert
+  convert = LE.encodeUtf8 . convert
 
 instance Utf8Convertible Text TextBuilder where
   {-# INLINE convert #-}
   convert = TB.fromText
+
+instance Utf8Convertible Text BSBuilder where
+  {-# INLINE convert #-}
+  convert = E.encodeUtf8Builder
 
 --------------------------------
 -- from LazyText instances
@@ -111,6 +118,10 @@ instance Utf8Convertible LText TextBuilder where
   {-# INLINE convert #-}
   convert = TB.fromLazyText
 
+instance Utf8Convertible LText BSBuilder where
+  {-# INLINE convert #-}
+  convert = LE.encodeUtf8Builder
+
 --------------------------------
 -- from ByteString instances
 --------------------------------
@@ -137,6 +148,10 @@ instance Utf8Convertible ByteString LByteString where
 instance Utf8Convertible ByteString TextBuilder where
   {-# INLINE convert #-}
   convert = TB.fromLazyText . convert
+
+instance Utf8Convertible ByteString BSBuilder where
+  {-# INLINE convert #-}
+  convert = BB.byteString
 
 --------------------------------
 -- from LazyByteString instances
@@ -165,6 +180,10 @@ instance Utf8Convertible LByteString TextBuilder where
   {-# INLINE convert #-}
   convert = TB.fromLazyText . convert
 
+instance Utf8Convertible LByteString BSBuilder where
+  {-# INLINE convert #-}
+  convert = BB.lazyByteString
+
 --------------------------------
 -- from TextLazyBuilder instances
 --------------------------------
@@ -191,3 +210,7 @@ instance Utf8Convertible TextBuilder LByteString where
 instance Utf8Convertible TextBuilder TextBuilder where
   {-# INLINE convert #-}
   convert = id
+
+instance Utf8Convertible TextBuilder BSBuilder where
+  {-# INLINE convert #-}
+  convert = convert . TB.toLazyText
