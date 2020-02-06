@@ -23,21 +23,30 @@ type ByteString = BS.ByteString
 
 type LByteString = LBS.ByteString
 
--- | Utf8Convertible class
+{- |
+  Indicates that conversion from A to B is possible
+-}
 class Utf8Convertible a b where
   convert :: a -> b
 
--- | example usage
--- convertToText :: ConvertTo Text a => a -> Text
--- convertToText convertible = convert convertible
+{- |
+  Can write constraints on values ​​that can be converted to A
+
+  example usage
+  convertToText :: ConvertTo Text a => a -> Text
+  convertToText convertible = convert convertible
+-}
 type ConvertTo to from = Utf8Convertible from to
 
--- | example usage
--- ConvertFrom :: ConvertFrom Text a => a -> String
--- ConvertFrom convertible = convert convertible
+{- |
+  Can write constraints on values ​​that can be converted from A
+
+  example usage
+  ConvertFromText :: ConvertFrom Text a => a -> String
+  ConvertFromText convertible = convert convertible
+-}
 type ConvertFrom from to = Utf8Convertible from to
 
--- |
 --------------------------------
 -- from String instances
 --------------------------------
@@ -45,7 +54,6 @@ instance S.IsString a => Utf8Convertible String a where
   {-# INLINE convert #-}
   convert = S.fromString
 
--- |
 --------------------------------
 -- from Text instances
 --------------------------------
@@ -69,7 +77,6 @@ instance Utf8Convertible Text LByteString where
   {-# INLINE convert #-}
   convert = LBS.fromStrict . convert
 
--- |
 --------------------------------
 -- from LazyText instances
 --------------------------------
@@ -93,7 +100,6 @@ instance Utf8Convertible LText LByteString where
   {-# INLINE convert #-}
   convert = LE.encodeUtf8
 
--- |
 --------------------------------
 -- from ByteString instances
 --------------------------------
@@ -117,7 +123,6 @@ instance Utf8Convertible ByteString LByteString where
   {-# INLINE convert #-}
   convert = LBS.fromStrict
 
--- |
 --------------------------------
 -- from LazyByteString instances
 --------------------------------
