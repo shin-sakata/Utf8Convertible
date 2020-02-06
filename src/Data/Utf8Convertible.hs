@@ -12,6 +12,7 @@ import qualified Data.String as S
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as E
 import qualified Data.Text.Lazy as LT
+import qualified Data.Text.Lazy.Builder as TB
 import qualified Data.Text.Lazy.Encoding as LE
 import Prelude (String, (.), id)
 
@@ -22,6 +23,8 @@ type LText = LT.Text
 type ByteString = BS.ByteString
 
 type LByteString = LBS.ByteString
+
+type TextBuilder = TB.Builder
 
 {- |
   Indicates that conversion from A to B is possible
@@ -77,6 +80,10 @@ instance Utf8Convertible Text LByteString where
   {-# INLINE convert #-}
   convert = LBS.fromStrict . convert
 
+instance Utf8Convertible Text TextBuilder where
+  {-# INLINE convert #-}
+  convert = TB.fromText
+
 --------------------------------
 -- from LazyText instances
 --------------------------------
@@ -99,6 +106,10 @@ instance Utf8Convertible LText ByteString where
 instance Utf8Convertible LText LByteString where
   {-# INLINE convert #-}
   convert = LE.encodeUtf8
+
+instance Utf8Convertible LText TextBuilder where
+  {-# INLINE convert #-}
+  convert = TB.fromLazyText
 
 --------------------------------
 -- from ByteString instances
@@ -123,6 +134,10 @@ instance Utf8Convertible ByteString LByteString where
   {-# INLINE convert #-}
   convert = LBS.fromStrict
 
+instance Utf8Convertible ByteString TextBuilder where
+  {-# INLINE convert #-}
+  convert = TB.fromLazyText . convert
+
 --------------------------------
 -- from LazyByteString instances
 --------------------------------
@@ -145,3 +160,7 @@ instance Utf8Convertible LByteString ByteString where
 instance Utf8Convertible LByteString LByteString where
   {-# INLINE convert #-}
   convert = id
+
+instance Utf8Convertible LByteString TextBuilder where
+  {-# INLINE convert #-}
+  convert = TB.fromLazyText . convert
