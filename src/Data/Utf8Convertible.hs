@@ -201,11 +201,11 @@ instance Utf8Convertible TextBuilder LText where
 
 instance Utf8Convertible TextBuilder ByteString where
   {-# INLINE convert #-}
-  convert = E.encodeUtf8 . convert
+  convert = convert . TB.toLazyText
 
 instance Utf8Convertible TextBuilder LByteString where
   {-# INLINE convert #-}
-  convert = LE.encodeUtf8 . TB.toLazyText
+  convert = convert . TB.toLazyText
 
 instance Utf8Convertible TextBuilder TextBuilder where
   {-# INLINE convert #-}
